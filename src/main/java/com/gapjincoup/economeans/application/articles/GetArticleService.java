@@ -1,12 +1,19 @@
 package com.gapjincoup.economeans.application.articles;
 
+import com.gapjincoup.economeans.infrastructure.FinnhubClient;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class GetArticleService {
+    private final FinnhubClient finnhubClient;
+
+    public GetArticleService(FinnhubClient finnhubClient) {
+        this.finnhubClient = finnhubClient;
+    }
+
     public List<Object> getListArticle(String category) {
-        return List.of();
+        return finnhubClient.getListNews(category);
     }
 }

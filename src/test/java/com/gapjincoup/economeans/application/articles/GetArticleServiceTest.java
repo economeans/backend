@@ -1,24 +1,29 @@
 package com.gapjincoup.economeans.application.articles;
 
+import com.gapjincoup.economeans.infrastructure.FinnhubClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 class GetArticleServiceTest {
     private GetArticleService getArticleService;
+    private FinnhubClient finnhubClient;
 
     @BeforeEach
     void setUp() {
-        getArticleService = new GetArticleService();
+        finnhubClient = mock(FinnhubClient.class);
+
+        getArticleService = new GetArticleService(finnhubClient);
     }
 
     @Test
     void testGetListArticle() {
         String category = "category";
 
-        assertThat(getArticleService.getListArticle(category)).isEqualTo(List.of());
+        getArticleService.getListArticle(category);
+
+        verify(finnhubClient).getListNews(category);
     }
 }
