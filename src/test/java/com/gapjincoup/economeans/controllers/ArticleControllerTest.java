@@ -9,6 +9,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 
+import java.util.List;
+
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -26,11 +30,16 @@ class ArticleControllerTest extends ControllerTest {
     void testGetListArticle() throws Exception {
         String category = "category";
 
+        given(getArticleService.getListArticle(category))
+                .willReturn(List.of());
+
         RequestBuilder builder = get("/articles")
                 .param("category", category);
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.articles").exists());
+
+        verify(getArticleService).getListArticle(category);
     }
 }
