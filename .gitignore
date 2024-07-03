@@ -37,5 +37,5 @@ out/
 .vscode/
 
 ### ###
-*.env
-!example.env
+/*.env
+!/example.env
