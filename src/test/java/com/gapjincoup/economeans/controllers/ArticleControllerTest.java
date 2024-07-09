@@ -26,14 +26,14 @@ class ArticleControllerTest extends ControllerTest {
     GetArticleService getArticleService;
 
     @Test
-    @DisplayName("GET /articles")
+    @DisplayName("GET /api/v1/articles")
     void testGetListArticle() throws Exception {
         String category = "category";
 
         given(getArticleService.getListArticle(category))
                 .willReturn(List.of());
 
-        RequestBuilder builder = get("/articles")
+        RequestBuilder builder = get("/api/v1/articles")
                 .param("category", category);
 
         mockMvc.perform(builder)
