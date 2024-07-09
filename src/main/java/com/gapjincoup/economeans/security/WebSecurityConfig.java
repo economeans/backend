@@ -14,13 +14,16 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests()
-                .requestMatchers(HttpMethod.POST, "/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/**").permitAll()
-                .requestMatchers(HttpMethod.PUT, "/**").permitAll()
-                .requestMatchers(HttpMethod.PATCH, "/**").permitAll()
-                .requestMatchers(HttpMethod.DELETE, "/**").permitAll()
-                .anyRequest().authenticated();
+        http
+                .authorizeHttpRequests(authorizeHttpRequests -> {
+                    authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/**").permitAll();
+                    authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/**").permitAll();
+                    authorizeHttpRequests.requestMatchers(HttpMethod.PUT, "/**").permitAll();
+                    authorizeHttpRequests.requestMatchers(HttpMethod.PATCH, "/**").permitAll();
+                    authorizeHttpRequests.requestMatchers(HttpMethod.DELETE, "/**").permitAll();
+
+                    authorizeHttpRequests.anyRequest().authenticated();
+                });
 
         return http.build();
     }
