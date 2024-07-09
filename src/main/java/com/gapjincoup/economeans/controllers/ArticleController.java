@@ -1,5 +1,6 @@
 package com.gapjincoup.economeans.controllers;
 
+import com.gapjincoup.economeans.annotations.Traced;
 import com.gapjincoup.economeans.application.articles.GetArticleService;
 import com.gapjincoup.economeans.dtos.ListArticleRequestDto;
 import com.gapjincoup.economeans.dtos.ListArticleResponseDto;
@@ -18,6 +19,7 @@ public class ArticleController {
     }
 
     @GetMapping
+    @Traced(spanName = "getListArticle")
     public ListArticleResponseDto getListArticle(@ModelAttribute ListArticleRequestDto requestDto) {
         return new ListArticleResponseDto(getArticleService.getListArticle(requestDto.category()));
     }
