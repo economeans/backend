@@ -1,16 +1,13 @@
 package com.gapjincoup.economeans.controllers;
 
-import com.gapjincoup.economeans.annotations.Traced;
 import com.gapjincoup.economeans.application.articles.GetArticleService;
 import com.gapjincoup.economeans.dtos.ListArticleRequestDto;
 import com.gapjincoup.economeans.dtos.ListArticleResponseDto;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.stereotype.Controller;
 
-@RestController
-@RequestMapping("/api/v1/articles")
+@Controller
 public class ArticleController {
     private final GetArticleService getArticleService;
 
@@ -18,9 +15,8 @@ public class ArticleController {
         this.getArticleService = getArticleService;
     }
 
-    @GetMapping
-    @Traced(spanName = "getListArticle")
-    public ListArticleResponseDto getListArticle(@ModelAttribute ListArticleRequestDto requestDto) {
+    @QueryMapping
+    public ListArticleResponseDto getListArticle(@Argument ListArticleRequestDto requestDto) {
         return new ListArticleResponseDto(getArticleService.getListArticle(requestDto.category()));
     }
 }

@@ -1,11 +1,11 @@
 package com.gapjincoup.economeans.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.stereotype.Controller;
 
-@RestController
+@Controller
 public class WelcomeController {
-    @GetMapping
+    @QueryMapping
     public String welcome() {
         return "Hello World!";
     }
