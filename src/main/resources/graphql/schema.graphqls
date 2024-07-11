@@ -1,4 +1,24 @@
 type Query {
     welcome: String
+    getListArticle(requestDto: ListArticleRequestDto): ListArticleResponseDto
 }
 
+input ListArticleRequestDto {
+    category: String
+}
+
+type ListArticleResponseDto {
+    articles: [Article]
+}
+
+type Article {
+    category: String
+    datetime: String
+    headline: String
+    id: String
+    image: String
+    related: String
+    source: String
+    summary: String
+    url: String
+}
