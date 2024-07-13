@@ -1,7 +1,7 @@
 package com.gapjincoup.economeans.controllers;
 
 import com.gapjincoup.economeans.EconomeansApplication;
-import com.gapjincoup.economeans.security.WebSecurityConfig;
+import com.gapjincoup.economeans.security.config.WebSecurityConfig;
 import org.springframework.test.context.ContextConfiguration;
 
 @ContextConfiguration(classes = {

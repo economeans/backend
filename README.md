@@ -114,3 +114,6 @@ Finnhub API 키를 지정합니다.
 - Docker
 - OpenTelemetry (추적)
 - Finnhub API (뉴스 데이터)
+
+## 소셜 로그인 스팩
+http://localhost:8080/oauth2/authorization/naver?redirect_uri=https://naver.com&mode=login
