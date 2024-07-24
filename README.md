@@ -34,6 +34,15 @@ cp example.env .env
 FINNHUB_API_KEY=
 ```
 
+#### 4. IntelliJ IDEA에서 Lombok 플러그인 설치:
+
+1. IntelliJ IDEA를 엽니다.
+2. File > Settings (Windows/Linux) 또는 IntelliJ IDEA > Preferences (macOS)로 이동합니다.
+3. Plugins로 이동합니다.
+4. Marketplace 탭에서 "Lombok"을 검색합니다.
+5. "Lombok" 플러그인을 찾아 "Install" 버튼을 클릭합니다.
+6. IDE를 재시작하여 변경 사항을 적용합니다.
+
 ### 실행
 
 Docker Compose를 사용하여 애플리케이션을 빌드하고 실행합니다:
