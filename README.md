@@ -34,6 +34,15 @@ cp example.env .env
 FINNHUB_API_KEY=
 ```
 
+#### 4. IntelliJ IDEA에서 Lombok 플러그인 설치:
+
+1. IntelliJ IDEA를 엽니다.
+2. File > Settings (Windows/Linux) 또는 IntelliJ IDEA > Preferences (macOS)로 이동합니다.
+3. Plugins로 이동합니다.
+4. Marketplace 탭에서 "Lombok"을 검색합니다.
+5. "Lombok" 플러그인을 찾아 "Install" 버튼을 클릭합니다.
+6. IDE를 재시작하여 변경 사항을 적용합니다.
+
 ### 실행
 
 Docker Compose를 사용하여 애플리케이션을 빌드하고 실행합니다:
@@ -46,13 +55,32 @@ docker compose up --build
 
 ### API 테스트
 
-애플리케이션이 실행되면 다음 엔드포인트를 테스트할 수 있습니다:
+애플리케이션이 실행되면 GraphQL API를 테스트할 수 있습니다:
 
-- GET `/api/v1/articles`: 경제 뉴스 기사 목록을 가져옵니다.
+- GraphQL 엔드포인트: `http://localhost:8080/graphql`
+- GraphiQL 인터페이스: `http://localhost:8080/graphiql` (개발 환경에서만 사용 가능)
 
-예시 요청: `curl "http://localhost:8080/api/v1/articles?category=general"`
+예시 쿼리:
 
-성공적인 응답은 200 상태 코드와 함께 JSON 형식의 기사 목록을 반환합니다.
+```graphql
+query {
+  getListArticle(requestDto: {category: "general"}) {
+    articles {
+        category
+        datetime
+        headline
+        id
+        image
+        related
+        source
+        summary
+        url
+    }
+  }
+}
+```
+
+성공적인 응답은 요청한 기사 정보를 JSON 형식으로 반환합니다.
 
 ## 개발
 
@@ -111,6 +139,7 @@ Finnhub API 키를 지정합니다.
 ## 기술 스택
 
 - Spring Boot (Java 19)
+- GraphQL
 - Docker
 - OpenTelemetry (추적)
 - Finnhub API (뉴스 데이터)
