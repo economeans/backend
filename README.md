@@ -55,13 +55,32 @@ docker compose up --build
 
 ### API 테스트
 
-애플리케이션이 실행되면 다음 엔드포인트를 테스트할 수 있습니다:
+애플리케이션이 실행되면 GraphQL API를 테스트할 수 있습니다:
 
-- GET `/api/v1/articles`: 경제 뉴스 기사 목록을 가져옵니다.
+- GraphQL 엔드포인트: `http://localhost:8080/graphql`
+- GraphiQL 인터페이스: `http://localhost:8080/graphiql` (개발 환경에서만 사용 가능)
 
-예시 요청: `curl "http://localhost:8080/api/v1/articles?category=general"`
+예시 쿼리:
 
-성공적인 응답은 200 상태 코드와 함께 JSON 형식의 기사 목록을 반환합니다.
+```graphql
+query {
+  getListArticle(requestDto: {category: "general"}) {
+    articles {
+        category
+        datetime
+        headline
+        id
+        image
+        related
+        source
+        summary
+        url
+    }
+  }
+}
+```
+
+성공적인 응답은 요청한 기사 정보를 JSON 형식으로 반환합니다.
 
 ## 개발
 
@@ -120,6 +139,7 @@ Finnhub API 키를 지정합니다.
 ## 기술 스택
 
 - Spring Boot (Java 19)
+- GraphQL
 - Docker
 - OpenTelemetry (추적)
 - Finnhub API (뉴스 데이터)
