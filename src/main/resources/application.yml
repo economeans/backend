@@ -62,3 +62,12 @@ spring:
             enabled: true
             printer:
                 enabled: true
+
+    datasource:
+        url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DATABASE}
+        username: ${POSTGRES_USERNAME}
+        password: ${POSTGRES_PASSWORD}
+
+    jpa:
+        hibernate:
+            ddl-auto: update
