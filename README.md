@@ -34,7 +34,34 @@ cp example.env .env
 FINNHUB_API_KEY=
 ```
 
-#### 4. IntelliJ IDEA에서 Lombok 플러그인 설치:
+#### 4. 데이터베이스 설정
+
+이 프로젝트는 PostgreSQL 데이터베이스를 사용합니다. 다음 단계를 따라 데이터베이스를 설정하세요:
+
+##### PostgreSQL 데이터베이스 서버를 설치하고 실행합니다.
+
+##### 새 데이터베이스를 생성합니다:
+
+```bash
+createdb economeans
+```
+
+##### .env 파일에 다음 환경 변수를 설정합니다:
+
+```
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_DATABASE=economeans
+POSTGRES_USERNAME=your_username
+POSTGRES_PASSWORD=your_password
+```
+
+`your_username`과 `your_password`를 실제 PostgreSQL 사용자 이름과 비밀번호로 변경하세요.
+
+##### 애플리케이션을 실행하면 Hibernate가 자동으로 필요한 테이블을 생성합니다.
+
+
+#### 5. IntelliJ IDEA에서 Lombok 플러그인 설치:
 
 1. IntelliJ IDEA를 엽니다.
 2. File > Settings (Windows/Linux) 또는 IntelliJ IDEA > Preferences (macOS)로 이동합니다.
