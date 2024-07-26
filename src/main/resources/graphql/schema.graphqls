@@ -8,10 +8,10 @@ input ListArticleRequestDto {
 }
 
 type ListArticleResponseDto {
-    articles: [Article]
+    articles: [ArticleSummary]
 }
 
-type Article {
+type ArticleSummary {
     category: String
     datetime: String
     headline: String
