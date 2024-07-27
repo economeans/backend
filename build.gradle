@@ -47,10 +47,14 @@ dependencies {
     implementation 'io.opentelemetry.semconv:opentelemetry-semconv:1.25.0-alpha'
     implementation 'io.opentelemetry:opentelemetry-sdk-extension-autoconfigure'
 
+    // TSID
+    implementation 'io.hypersistence:hypersistence-tsid:2.1.0'
+
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'com.mysql:mysql-connector-j'
+    runtimeOnly 'org.postgresql:postgresql'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'

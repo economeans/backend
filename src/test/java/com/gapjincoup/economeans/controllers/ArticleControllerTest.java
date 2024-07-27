@@ -1,6 +1,7 @@
 package com.gapjincoup.economeans.controllers;
 
 import com.gapjincoup.economeans.application.articles.GetArticleService;
+import com.gapjincoup.economeans.dtos.ArticleDetailResponseDto;
 import com.gapjincoup.economeans.dtos.FinnhubMarketNewsDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -63,5 +64,41 @@ class ArticleControllerTest extends ControllerTest {
                 });
 
         verify(getArticleService).getListArticle(category);
+    }
+
+    @Test
+    @DisplayName("존재하는 기사 상세 요청")
+    void getExistingArticleDetail() {
+        String query = """
+                query($articleId: String!) {
+                    getArticleDetail(requestDto: { articleId: $articleId }) {
+                        id
+                        title
+                        terms
+                    }
+                }
+                """;
+
+        String articleId = "123";
+        String title = "title";
+        List<List<String>> list2Term = List.of(List.of());
+
+        given(getArticleService.getArticleDetail(articleId))
+                .willReturn(new ArticleDetailResponseDto(
+                        articleId,
+                        title,
+                        list2Term
+                ));
+
+        graphQlTester.document(query)
+                .variable("articleId", articleId)
+                .execute()
+                .path("getArticleDetail")
+                .entity(ArticleDetailResponseDto.class)
+                .satisfies(response -> {
+                    assert response.id().equals(articleId);
+                    assert response.title().equals(title);
+                    assert response.terms().equals(list2Term);
+                });
     }
 }

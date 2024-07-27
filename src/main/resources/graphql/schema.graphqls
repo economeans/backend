@@ -1,6 +1,7 @@
 type Query {
     welcome: String
     getListArticle(requestDto: ListArticleRequestDto): ListArticleResponseDto
+    getArticleDetail(requestDto: ArticleDetailRequestDto): ArticleDetail
 }
 
 input ListArticleRequestDto {
@@ -8,10 +9,10 @@ input ListArticleRequestDto {
 }
 
 type ListArticleResponseDto {
-    articles: [Article]
+    articles: [ArticleSummary]
 }
 
-type Article {
+type ArticleSummary {
     category: String
     datetime: String
     headline: String
@@ -21,4 +22,14 @@ type Article {
     source: String
     summary: String
     url: String
+}
+
+input ArticleDetailRequestDto {
+    articleId: String!
+}
+
+type ArticleDetail {
+    id: String
+    title: String
+    terms: [[String]]
 }

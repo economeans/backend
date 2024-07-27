@@ -1,6 +1,8 @@
 package com.gapjincoup.economeans.controllers;
 
 import com.gapjincoup.economeans.application.articles.GetArticleService;
+import com.gapjincoup.economeans.dtos.ArticleDetailRequestDto;
+import com.gapjincoup.economeans.dtos.ArticleDetailResponseDto;
 import com.gapjincoup.economeans.dtos.ListArticleRequestDto;
 import com.gapjincoup.economeans.dtos.ListArticleResponseDto;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -18,5 +20,10 @@ public class ArticleController {
     @QueryMapping
     public ListArticleResponseDto getListArticle(@Argument ListArticleRequestDto requestDto) {
         return new ListArticleResponseDto(getArticleService.getListArticle(requestDto.category()));
+    }
+
+    @QueryMapping
+    public ArticleDetailResponseDto getArticleDetail(@Argument ArticleDetailRequestDto requestDto) {
+        return getArticleService.getArticleDetail(requestDto.articleId());
     }
 }
