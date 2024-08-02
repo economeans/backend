@@ -6,13 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-@ConfigurationProperties(prefix = "boilerplate.jwt")
+@ConfigurationProperties(prefix = "economeans.frontend.host")
 public class JwtTokenConstants {
-    private long accessTokenExpired;
-    private String accessTokenName;
-
-    private long refreshTokenExpired;
-    private String refreshTokenName;
-
-    private String domain;
+    private String host;
 }
