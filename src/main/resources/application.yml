@@ -71,3 +71,7 @@ spring:
     jpa:
         hibernate:
             ddl-auto: update
+
+economeans:
+    frontend:
+        host: ${ECONOMEANS_FRONTEND_HOST}

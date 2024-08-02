@@ -3,6 +3,7 @@ package com.gapjincoup.economeans.security.config;
 import com.gapjincoup.economeans.security.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.gapjincoup.economeans.security.handler.OAuth2AuthenticationFailureHandler;
 import com.gapjincoup.economeans.security.handler.OAuth2AuthenticationSuccessHandler;
+import com.gapjincoup.economeans.security.jwt.JwtTokenConstants;
 import com.gapjincoup.economeans.security.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +24,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableMethodSecurity(securedEnabled = true)
 @RequiredArgsConstructor
 public class WebSecurityConfig {
+    private final JwtTokenConstants jwtTokenConstants;
     private final CustomOAuth2UserService customOAuth2UserService;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
@@ -34,7 +36,7 @@ public class WebSecurityConfig {
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.addExposedHeader("*");
-        configuration.addAllowedOrigin("*");
+        configuration.addAllowedOrigin(jwtTokenConstants.getHost());
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource configurationSource = new UrlBasedCorsConfigurationSource();
