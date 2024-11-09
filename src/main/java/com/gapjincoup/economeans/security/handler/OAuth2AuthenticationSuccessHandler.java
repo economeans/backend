@@ -1,13 +1,10 @@
 package com.gapjincoup.economeans.security.handler;
 
-
 import com.gapjincoup.economeans.security.HttpCookieOAuth2AuthorizationRequestRepository;
-import com.gapjincoup.economeans.security.jwt.JwtTokenProvider;
 import com.gapjincoup.economeans.security.service.OAuth2UserPrincipal;
 import com.gapjincoup.economeans.security.user.OAuth2Provider;
 import com.gapjincoup.economeans.security.user.OAuth2UserUnlinkManager;
 import com.gapjincoup.economeans.security.util.CookieUtils;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,17 +18,22 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.io.IOException;
 import java.util.Optional;
 
+import static com.gapjincoup.economeans.security.HttpCookieOAuth2AuthorizationRequestRepository.MODE_PARAM_COOKIE_NAME;
+import static com.gapjincoup.economeans.security.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
+
 
 @Slf4j
-@Component
 @RequiredArgsConstructor
+@Component
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
     private final OAuth2UserUnlinkManager oAuth2UserUnlinkManager;
-//    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+                                        Authentication authentication) throws IOException {
+
         String targetUrl = determineTargetUrl(request, response, authentication);
 
         if (response.isCommitted()) {
@@ -43,14 +45,15 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
-    @Override
-    protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        Optional<String> redirectUri = CookieUtils.getCookie(request, HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME)
+    protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response,
+                                        Authentication authentication) {
+
+        Optional<String> redirectUri = CookieUtils.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue);
 
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
 
-        String mode = CookieUtils.getCookie(request, HttpCookieOAuth2AuthorizationRequestRepository.MODE_PARAM_COOKIE_NAME)
+        String mode = CookieUtils.getCookie(request, MODE_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue)
                 .orElse("");
 
@@ -63,16 +66,30 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         }
 
         if ("login".equalsIgnoreCase(mode)) {
-            loginSuccess(response, principal);
+            // TODO: DB 저장
+            // TODO: 액세스 토큰, 리프레시 토큰 발급
+            // TODO: 리프레시 토큰 DB 저장
+            log.info("email={}, name={}, nickname={}, accessToken={}", principal.getUserInfo().getEmail(),
+                    principal.getUserInfo().getName(),
+                    principal.getUserInfo().getNickname(),
+                    principal.getUserInfo().getAccessToken()
+            );
+
+            String accessToken = "test_access_token";
+            String refreshToken = "test_refresh_token";
 
             return UriComponentsBuilder.fromUriString(targetUrl)
+                    .queryParam("access_token", accessToken)
+                    .queryParam("refresh_token", refreshToken)
                     .build().toUriString();
-        }
 
-        if ("unlink".equalsIgnoreCase(mode)) {
+        } else if ("unlink".equalsIgnoreCase(mode)) {
+
             String accessToken = principal.getUserInfo().getAccessToken();
             OAuth2Provider provider = principal.getUserInfo().getProvider();
 
+            // TODO: DB 삭제
+            // TODO: 리프레시 토큰 삭제
             oAuth2UserUnlinkManager.unlink(provider, accessToken);
 
             return UriComponentsBuilder.fromUriString(targetUrl)
@@ -87,19 +104,14 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private OAuth2UserPrincipal getOAuth2UserPrincipal(Authentication authentication) {
         Object principal = authentication.getPrincipal();
 
-        return (OAuth2UserPrincipal) principal;
+        if (principal instanceof OAuth2UserPrincipal) {
+            return (OAuth2UserPrincipal) principal;
+        }
+        return null;
     }
 
     protected void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {
         super.clearAuthenticationAttributes(request);
         httpCookieOAuth2AuthorizationRequestRepository.removeAuthorizationRequestCookies(request, response);
     }
-
-    private void loginSuccess(HttpServletResponse response, OAuth2UserPrincipal oAuth2User) {
-//        String accessToken = jwtTokenProvider.generateAccessToken(oAuth2User);
-//        String refreshToken = jwtTokenProvider.generateRefreshToken(oAuth2User);
-//
-//        jwtTokenProvider.setToken(response, accessToken, refreshToken);
-    }
 }
-

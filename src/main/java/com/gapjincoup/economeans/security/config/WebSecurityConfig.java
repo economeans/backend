@@ -45,32 +45,29 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(authorizeHttpRequests -> {
-            authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/**").permitAll();
-            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/**").permitAll();
-            authorizeHttpRequests.requestMatchers(HttpMethod.PUT, "/**").permitAll();
-            authorizeHttpRequests.requestMatchers(HttpMethod.PATCH, "/**").permitAll();
-            authorizeHttpRequests.requestMatchers(HttpMethod.DELETE, "/**").permitAll();
-            authorizeHttpRequests.requestMatchers("/oauth2/authorization/*").permitAll();
+        http
+                .csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(authorizeHttpRequests -> {
+                    authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/**").permitAll();
+                    authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/**").permitAll();
+                    authorizeHttpRequests.requestMatchers(HttpMethod.PUT, "/**").permitAll();
+                    authorizeHttpRequests.requestMatchers(HttpMethod.PATCH, "/**").permitAll();
+                    authorizeHttpRequests.requestMatchers(HttpMethod.DELETE, "/**").permitAll();
+                    authorizeHttpRequests.requestMatchers("/oauth2/authorization/*").permitAll();
 
-            authorizeHttpRequests.anyRequest().authenticated();
-        });
+                    authorizeHttpRequests.anyRequest().authenticated();
+                });
 
         http
                 .csrf(AbstractHttpConfigurer::disable) // CSRF Disable
                 .cors(cors ->
                         cors.configurationSource(corsConfigurationSource())) // CORS 설정
                 .formLogin(AbstractHttpConfigurer::disable) // formLogin Disable
-
-                // 세션 기반 인증 사용 하지 않는다.
-                .sessionManagement(sessionManagement ->
-                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                .httpBasic(AbstractHttpConfigurer::disable);
 
         http
+                .sessionManagement(sessions -> sessions.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2Login(configure ->
-                        configure.authorizationEndpoint(config -> config
-                                        .baseUri("/oauth2/authorization")
-                                        .authorizationRequestRepository(httpCookieOAuth2AuthorizationRequestRepository))
+                        configure.authorizationEndpoint(config -> config.authorizationRequestRepository(httpCookieOAuth2AuthorizationRequestRepository))
                                 .userInfoEndpoint(config -> config.userService(customOAuth2UserService))
                                 .successHandler(oAuth2AuthenticationSuccessHandler)
                                 .failureHandler(oAuth2AuthenticationFailureHandler)

@@ -35,31 +35,21 @@ public class HttpCookieOAuth2AuthorizationRequestRepository
             return;
         }
 
-        CookieUtils.addCookie(response,
-                OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME,
-                CookieUtils.serialize(authorizationRequest),
-                COOKIE_EXPIRE_SECONDS);
+        CookieUtils.addCookie(response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME, CookieUtils.serialize(authorizationRequest), COOKIE_EXPIRE_SECONDS);
 
         String redirectUriAfterLogin = request.getParameter(REDIRECT_URI_PARAM_COOKIE_NAME);
         if (StringUtils.hasText(redirectUriAfterLogin)) {
-            CookieUtils.addCookie(response,
-                    REDIRECT_URI_PARAM_COOKIE_NAME,
-                    redirectUriAfterLogin,
-                    COOKIE_EXPIRE_SECONDS);
+            CookieUtils.addCookie(response, REDIRECT_URI_PARAM_COOKIE_NAME, redirectUriAfterLogin, COOKIE_EXPIRE_SECONDS);
         }
 
         String mode = request.getParameter(MODE_PARAM_COOKIE_NAME);
         if (StringUtils.hasText(mode)) {
-            CookieUtils.addCookie(response,
-                    MODE_PARAM_COOKIE_NAME,
-                    mode,
-                    COOKIE_EXPIRE_SECONDS);
+            CookieUtils.addCookie(response, MODE_PARAM_COOKIE_NAME, mode, COOKIE_EXPIRE_SECONDS);
         }
     }
 
     @Override
-    public OAuth2AuthorizationRequest removeAuthorizationRequest(HttpServletRequest request,
-                                                                 HttpServletResponse response) {
+    public OAuth2AuthorizationRequest removeAuthorizationRequest(HttpServletRequest request, HttpServletResponse response) {
         return this.loadAuthorizationRequest(request);
     }
 
